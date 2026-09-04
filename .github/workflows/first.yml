@@ -20,5 +20,8 @@ jobs:
             - name: install dependency
               run: npm ci
 
+            - name: run es linting
+              run: npm run lint
+
             - name: make react build 
               run: npm run build
