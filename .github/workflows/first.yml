@@ -18,6 +18,13 @@ jobs:
                 node-version: 24
                 cache: npm
 
+            - name: setup not js
+              uses: actions/setup-node@24
+              with:
+                node-version: 24
+                cache: npm
+
+
             - name: install dependency
               run: npm ci
 
