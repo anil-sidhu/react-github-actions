@@ -19,7 +19,7 @@ jobs:
                 cache: npm
 
             - name: setup not js
-              uses: actions/setup-node@24
+              uses: actions/setup-node@4
               with:
                 node-version: 24
                 cache: npm
