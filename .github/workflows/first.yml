@@ -65,6 +65,11 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                    name: react-build
-                   path: /dist
-                   retention-days: 7          
-      
+                   path: dist/
+                   retention-days: 7
+            - name: Install Vercel CLI
+              run: npm install --global vercel
+
+            - name: Deploy to Vercel
+              run: vercel --prod --yes --token=vcp_8Nsktx2tuhdVWyLtMA7VZGjeFkuIaijezJWgFvrcfQts6eoWDh0EaBCA       
+                  
