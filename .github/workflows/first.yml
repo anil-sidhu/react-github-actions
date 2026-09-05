@@ -8,7 +8,7 @@ on:
       - qa
       
 jobs:
-    first-job:
+    lint-job:
         runs-on: ubuntu-latest
         steps:
             - name: checkout
@@ -26,8 +26,39 @@ jobs:
             - name: run ESLint in app
               run: npm run lint
 
+    test-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v4
+
+            - name: "setup node js in VM "
+              uses: actions/setup-node@v4
+              with:
+                node-version: 24
+                cache: npm
+            
+            - name: install dependency
+              run: npm ci
+
             - name: run test cases
               run: npm run test
+
+
+    build-job:
+        needs: [lint-job,test-job]
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v4
+
+            - name: "setup node js in VM "
+              uses: actions/setup-node@v4
+              with:
+                node-version: 24
+                cache: npm
+            - name: install dependency
+              run: npm ci
 
             - name: make react build 
               run: npm run build
@@ -38,8 +69,3 @@ jobs:
                    name: react-build
                    path: dist/
                    retention-days: 7
-            - name: Download Build Artifact
-              uses: actions/download-artifact@v5
-              with:
-                name: react-build
-                path: dist/    
