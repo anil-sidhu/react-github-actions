@@ -38,4 +38,8 @@ jobs:
                    name: react-build
                    path: dist/
                    retention-days: 7
-    
+            - name: Download Build Artifact
+              uses: actions/download-artifact@v5
+              with:
+                name: react-build
+                path: dist/    
