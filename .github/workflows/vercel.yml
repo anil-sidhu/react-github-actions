@@ -1,0 +1,18 @@
+name: "first workflow"
+on: 
+  push:
+  pull_request:
+    branches:
+      - main
+      - dev
+      - qa
+      
+jobs:
+    build-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install Vercel CLI
+              run: npm install --global vercel
+
+            - name: Deploy to Vercel
+              run: vercel --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"      
