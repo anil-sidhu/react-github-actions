@@ -46,6 +46,11 @@ jobs:
     build-job:
         needs: [lint-job,test-job]
         runs-on: ubuntu-latest
+
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
         steps:
             - name: checkout
               uses: actions/checkout@v4
@@ -58,25 +63,16 @@ jobs:
 
             - name: install dependency
               run: npm ci
-            - name: make react build 
+
+            # Build React app in GitHub Actions
+            - name: Build React app
               run: npm run build
 
-            - name: create artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                   name: react-build
-                   path: dist/
-                   retention-days: 7          
+              
 
-    deploy-job:
-        needs: [lint-job,test-job,build-job]
-        runs-on: ubuntu-latest
-        steps:
-            - name: checkout
-              uses: actions/checkout@v4
-
-            - name: "Install vercel cli"    
+            - name: Install Vercel CLI
               run: npm install --global vercel
 
-            - name: deployment on vercel
-              run: vercel --prod --yes --token="${{secrets.VERCEL_TOKEN}}"
+            # Deploy the dist folder created above
+            - name: Deploy build to Vercel
+              run: vercel deploy dist --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
