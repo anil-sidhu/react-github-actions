@@ -48,8 +48,9 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            VERCEL_ORG_ID: "${{secrets.VERCEL_ORG_ID}}"
+            VERCEL_PROJECT_ID: "${{secrets.VERCEL_PROJECT_ID}}"
+
 
         steps:
             - name: checkout
@@ -63,17 +64,18 @@ jobs:
 
             - name: install dependency
               run: npm ci
-
-            # Build React app in GitHub Actions
-            - name: Build React app
+            - name: make react build 
               run: npm run build
 
-            # - name: Check built HTML
-            #   run: cat dist/index.html
-
-            - name: Install Vercel CLI
+            - name: create artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                   name: react-build
+                   path: dist/
+                   retention-days: 7  
+            
+            - name: "Install vercel cli"    
               run: npm install --global vercel
 
-            # Deploy the dist folder created above
-            - name: Deploy build to Vercel
-              run: vercel deploy dist --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
+            - name: deployment on vercel
+              run: vercel deploy dist --prod --yes --token="${{secrets.VERCEL_TOKEN}}"        
