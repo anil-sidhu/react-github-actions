@@ -68,8 +68,8 @@ jobs:
             - name: Build React app
               run: npm run build
 
-            - name: Check built HTML
-              run: cat dist/index.html
+            # - name: Check built HTML
+            #   run: cat dist/index.html
 
             - name: Install Vercel CLI
               run: npm install --global vercel
